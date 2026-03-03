@@ -1,3 +1,8 @@
 *~
 *.log
 *.pyc
+*.exe
+*.class
+c/comment
+c/hello
+zzz.*
