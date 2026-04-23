@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="basecss"  rel="stylesheet" href="/css/base.css">
+    <link id="themecss" rel="stylesheet" href="/css/dark.css">
+    <script src="/js/gebi.js"></script>
+    <script src="/js/cookie.js"></script>
+    <script src="/js/css.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/bgimg.js"></script>
+    <script src="/js/face_onload.js"></script>
+    <script src="/js/trim_code.js"></script>
+    <script src="/js/turn.js"></script>
+  </head>
+  <body onload="face_onload(); trim_code();">
+    <div class="top-right-menu">
+      <button onclick="location.href='/face/face.html'">face</button>
+      <button onclick="turn(this, '.en', turn_inline)" >英文</button>
+      <button onclick="turn(this, '.ja', turn_inline)" >訳文</button>
+    </div>
+
+    <h2><a name="NAME">NAME</a></h2>
+    <code></code> --- 
+
+    <h2><a name="DESCRIPTION">DESCRIPTION</a></h2>
+    <span class="en">
+      The following global variables are created and managed automatically
+      by the Tcl library.
+    </span>
+    <span class="ja">
+      以下のグローバル変数は、Tclライブラリによって自動的に作成および
+      管理されます。
+    </span>
+    <span class="en">
+      Except where noted below, these variables should normally be treated
+      as read-only by application-specific code and by users.
+    </span>
+    <span class="ja">
+      以下に記載がない限り、これらの変数はアプリケーション固有のコードや
+      ユーザーによって通常は読み取り専用として扱われるべきです。
+    </span>
+    <dl>
+      <dt><var>auto_path</var></dt>
+      <dd>
+        <span class="en">
+          If set, then it must contain a valid Tcl list giving directories
+          to search during auto-load operations (including for
+          package index files when using the default
+          <a href="../TclCmd/package.htm">package unknown</a> handler).
+        </span>
+        <span class="ja">
+          設定されている場合、有効なTclリストが含まれている必要があり、
+          自動ロード操作中に検索するディレクトリを指定します
+          (デフォルトの <a href="../TclCmd/package.htm">package unknown</a>
+          ハンドラーを使用する場合のパッケージインデックスファイルを含む）。
+        </span>
+        <span class="en">
+          This variable is initialized during startup to contain,
+          in order: the directories listed
+          in the <var>TCLLIBPATH</var> environment variable,
+          the directory named by the <var>tcl_library</var> global variable,
+          the parent directory of <code>tcl_library</code>,
+          the directories listed in the <var>tcl_pkgPath</var> variable.
+        </span>
+        <span class="ja">
+          この変数は起動時に初期化され、順に <var>TCLLIBPATH</var> 環境変数に
+          リストされたディレクトリ、<var>tcl_library</var> グローバル変数で
+          指定されたディレクトリ、<code>tcl_library</code> の親ディレクトリ、
+          <var>tcl_pkgPath</var> 変数にリストされたディレクトリが含まれます。
+        </span>
+        <span class="en">
+          Additional locations to look for files and package indices
+          should normally be added to this variable using
+          <a href="../TclCmd/lappend.htm">lappend</a>.
+        </span>
+        <span class="ja">
+          ファイルやパッケージインデックスを検索するための追加の場所は、
+          通常 <a href="../TclCmd/lappend.htm">lappend</a> を使用して
+          この変数に追加する必要があります。
+        </span>
+        <br><br>
+        <span class="en">
+          Additional variables relating to package management exist.
+        </span>
+        <span class="ja">
+          パッケージ管理に関連する追加の変数が存在します。
+        </span>
+        <span class="en">More details are listed
+          in the <a href="../TclCmd/library.htm#VARIABLES">VARIABLES</a>
+          section of the <a href="../TclCmd/library.htm">library</a>
+          manual page.
+        </span>
+        <span class="ja">
+          詳細は <a href="../TclCmd/library.htm">library</a> マニュアル
+          ページの <a href="../TclCmd/library.htm#VARIABLES">VARIABLES</a>
+          セクションに記載されています。
+        </span>
+      </dd>
+      <dt><var>env</var></dt>
+      <dd>
+        <span class="en">
+          This variable is maintained by <code>Tcl</code> as an array
+          whose elements are the environment variables for the process.
+        </span>
+        <span class="ja">
+          この変数はプロセスの環境変数要素として <code>Tcl</code> によって
+          配列として管理されます 。
+        </span>
+        <span class="en">
+          Reading an element will return the value of the corresponding
+          environment variable.
+        </span>
+        <span class="ja">
+          要素を読み取ると、対応する環境変数の値が返されます。
+        </span>
+        <span class="en">
+          Setting an element of the array will modify the corresponding
+          environment variable or create a new one if it does not
+          already exist.
+        </span>
+        <span class="ja">
+          配列の要素を設定すると、対応する環境変数が変更され、
+          既に存在しない場合は新しい変数が作成されます。
+        </span>
+        <span class="en">
+          Unsetting an element of <var>env</var> will remove
+          the corresponding environment variable.
+        </span>
+        <span class="ja">
+          <var>env</var> の要素を解除すると、対応する環境変数が削除されます。
+        </span>
+        <span class="en">
+          Changes to the <var>env</var> array will affect the environment
+          passed to children by commands like
+          <a href="../TclCmd/exec.htm">exec</a>.
+        </span>
+        <span class="ja">
+          <var>env</var> 配列の変更は、
+          <a href="../TclCmd/exec.htm">exec</a> のようなコマンドによって
+          子プロセスに渡される環境に影響します。
+        </span>
+        <span class="en">
+          If the entire <var>env</var> array is unset
+          then <code>Tcl</code> will stop monitoring <var>env</var> accesses
+          and will not update environment variables.
+        </span>
+        <span class="ja">
+          <var>env</var> 配列全体が解除された場合、<code>Tcl</code> は
+          <var>env</var> へのアクセスを監視しなくなり、
+          環境変数を更新しません。
+        </span>
+        <br><br>
+        <span class="en">
+          Under <code>Windows</code>, the environment variables
+          <var>PATH</var> and <var>COMSPEC</var> in any capitalization
+          are converted automatically to upper case.
+        </span>
+        <span class="ja">
+          <code>Windows</code> では、<var>PATH</var> および
+          <var>COMSPEC</var> 環境変数は、どのような大文字小文字でも
+          自動的に大文字に変換されます。
+        </span>
+        <span class="en">
+          For instance, the <var>PATH</var> variable could be exported
+          by the operating system as "path", "Path", "PaTh", etc.,
+          causing otherwise simple <code>Tcl</code> code to have to
+          support many special cases.
+        </span>
+        <span class="ja">
+          例えば、<var>PATH</var> 変数はオペレーティングシステムによって
+          "path"、"Path"、"PaTh" などとしてエクスポートされ、
+          単純な <code>Tcl</code> コードが多くの特別なケースをサポート
+          しなければならない原因となります。
+        </span>
+        <span class="en">
+          All other environment variables inherited by <code>Tcl</code>
+          are left unmodified.
+        </span>
+        <span class="ja">
+          <code>Tcl</code> が継承する他のすべての環境変数は変更されません。
+        </span>
+        <span class="en">
+          Setting an <var>env</var> array variable to blank is the same
+          as unsetting it as this is the behavior of the underlying
+          <code>Windows OS</code>.
+        </span>
+        <span class="ja">
+          <var>env</var> 配列変数を空白に設定することは、
+          それを解除することと同じであり、これは基礎となる
+          <code>Windows OS</code> の動作です。
+        </span>
+        <span class="en">
+          It should be noted that relying on an existing and
+          empty environment variable will not work on <code>Windows</code>
+          and is discouraged for cross-platform usage.
+        </span>
+        <span class="ja">
+          既存の空の環境変数に依存することは <code>Windows</code> では
+          機能せず、クロスプラットフォームでの使用は推奨されません。
+        </span>
+        <br><br>
+        <span class="en">
+          The following elements of <var>env</var> are special to
+          <code>Tcl</code>:
+        </span>
+        <span class="ja">
+          <var>env</var> の次の要素は <code>Tcl</code> に特有の ものです：
+        </span>
+      </dd>
+    </dl>
+
+    <h2><a name="OTHER GLOBAL VARIABLES">OTHER GLOBAL VARIABLES></a></h2
+
+    <h2><a name="EXAMPLES">SCRIPT FILES</a></h2>
+
+    <h2><a name="SEE ALSO">SEE ALSO</a></h2>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+
+  </body>
+</html>

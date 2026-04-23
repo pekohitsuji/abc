@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>wish</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="basecss"  rel="stylesheet" href="/css/base.css">
+    <link id="themecss" rel="stylesheet" href="/css/dark.css">
+    <script src="/js/gebi.js"></script>
+    <script src="/js/cookie.js"></script>
+    <script src="/js/css.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/bgimg.js"></script>
+    <script src="/js/face_onload.js"></script>
+    <script src="/js/trim_code.js"></script>
+    <script src="/js/turn.js"></script>
+  </head>
+  <body onload="face_onload(); trim_code();">
+    <div class="top-right-menu">
+      <button onclick="location.href='/face/face.html'">face</button>
+      <button onclick="turn(this, '.en', turn_inline)" >英文</button>
+      <button onclick="turn(this, '.ja', turn_inline)" >訳文</button>
+    </div>
+
+    <h2><a name="NAME">NAME</a></h2>
+    <code>wish</code> --- Simple windowing shell
+
+    <h2><a name="SYNOPSIS">SYNOPSIS</a></h2>
+    <code>wish</code> ?options? ?fileName arg ...?
+
+    <h2><a name="OPTIONS">OPTIONS</a></h2>
+
+    <dl>
+      <dt>-encoding name</dt>
+      <dd>
+        <span class="en">
+          Specifies the encoding of the text stored in fileName.
+          This option is only recognized prior to the fileName argument.
+        </span>
+        <span class="ja">
+          fileName に格納されているテキストのエンコーディングを指定します。
+          このオプションは fileName 引数の前に認識されます。
+        </span>
+      </dd>
+      <dt>-colormap new</dt>
+      <dd>
+        <span class="en">
+          Specifies that the window should have a new private colormap
+          instead of using the default colormap for the screen.
+        </span>
+        <span class="ja">
+          ウィンドウが画面のデフォルトのカラーマップを使用するのではなく、
+          新しいプライベートカラーマップを持つように指定します。
+        </span>
+      </dd>
+      <dt>-display display</dt>
+      <dd>
+        <span class="en">
+          Display (and screen) on which to display window.
+        </span>
+        <span class="ja">
+          ウィンドウを表示するディスプレイ（および画面）。
+        </span>
+      </dd>
+      <dt>-geometry geometry</dt>
+      <dd>
+        <span class="en">
+          Initial geometry to use for window.
+          If this option is specified, its value is stored
+          in the <a href="../TkCmd/tkvars.htm">geometry</a> global variable
+          of the application's Tcl interpreter.
+        </span>
+        <span class="ja">
+          ウィンドウに使用する初期ジオメトリ。
+          このオプションが指定されると、その値はアプリケーションの
+          Tcl インタープリタの <a href="../TkCmd/tkvars.htm">geometry</a>
+          グローバル変数に格納されます。
+        </span>
+      </dd>
+      <dt>-name name</dt>
+      <dd>
+        <span class="en">
+          Use name as the title to be displayed in the window,
+          and as the name of the interpreter
+          for <a href="../TkCmd/send.htm">send</a> commands.
+        </span>
+        <span class="ja">
+          name をウィンドウに表示されるタイトルとして使用し、
+          <a href="../TkCmd/send.htm">send</a>
+          コマンドのインタープリタ名として使用します。
+        </span>
+      </dd>
+      <dt>-sync</dt>
+      <dd>
+        <span class="en">
+          Execute all X server commands synchronously,
+          so that errors are reported immediately.
+          This will result in much slower execution,
+          but it is useful for debugging.
+        </span>
+        <span class="ja">
+          すべての X サーバーコマンドを同期的に実行し、
+          エラーが即座に報告されるようにします。
+          これにより実行速度は非常に遅くなりますが、デバッグには役立ちます。
+        </span>
+      </dd>
+      <dt>-use id</dt>
+      <dd>
+        <span class="en">
+          Specifies that the main window for the application is to be embedded
+          in the window whose identifier is id, instead of being created
+          as an independent toplevel window.
+          Id must be specified in the same way as the value
+          for the <code>-use</code> option for toplevel widgets
+          (i.e. it has a form like that returned by the
+          <a href="../TkCmd/winfo.htm">winfo id</a> command).
+          Note that on some platforms this will only work correctly
+          if id refers to a Tk <a href="../TkCmd/frame.htm">frame</a>
+          or <a href="../TkCmd/toplevel.htm">toplevel</a>
+          that has its <code>-container</code> option enabled.
+        </span>
+        <span class="ja">
+          アプリケーションのメインウィンドウが、
+          独立したトップレベルウィンドウとして作成される代わりに、
+          id で指定されたウィンドウに埋め込まれるように指定します。
+          Id はトップレベルウィジェットの <code>-use</code> オプションの
+          値と同じ方法で指定する必要があります
+          （つまり、<a href="../TkCmd/winfo.htm">winfo id</a> コマンドに
+          よって返される形式のようになります）。
+          一部のプラットフォームでは、id が <code>-container</code>
+          オプションが有効になっている Tk の
+          <a href="../TkCmd/frame.htm">frame</a> または
+          <a href="../TkCmd/toplevel.htm">toplevel</a> を参照している
+          場合にのみ、これが正しく機能することに注意してください。
+        </span>
+      </dd>
+      <dt>-visual visual</dt>
+      <dd>
+        <span class="en">
+          Specifies the visual to use for the window.
+          Visual may have any of the forms supported
+          by the <a href="../TkLib/GetVisual.htm">Tk_GetVisual</a> procedure.
+        </span>
+        <span class="ja">
+          ウィンドウに使用するビジュアルを指定します。
+          ビジュアルは <a href="../TkLib/GetVisual.htm">Tk_GetVisual</a>
+          手順でサポートされている形式のいずれかを持つことができます。
+        </span>
+      </dd>
+      <dt>--</dt>
+      <dd>
+        <span class="en">
+          Pass all remaining arguments through to the
+          script's <a href="../TclCmd/tclvars.htm">argv</a> variable
+          without interpreting them.
+          This provides a mechanism for passing arguments
+          such as <code>-name</code> to a script instead of
+          having <code>wish</code> interpret them.
+        </span>
+        <span class="ja">
+          残りのすべての引数を解釈せずにスクリプトの
+          <a href="../TclCmd/tclvars.htm">argv</a> 変数に渡します。
+          これにより、<code>wish</code> が解釈する代わりに、
+          <code>-name</code> などの引数をスクリプトに渡す
+          メカニズムが提供されます。
+        </span>
+      </dd>
+    </dl>
+
+    <h2><a name="DESCRIPTION">DESCRIPTION</a></h2>
+
+    <span class="en">
+      <code>Wish</code> is a simple program consisting of
+      the Tcl command language, the Tk toolkit, and a main program that
+      reads commands from standard input or from a file.
+    </span>
+    <span class="ja">
+      <code>wish</code> は Tcl コマンド言語、Tk ツールキット、
+      標準入力やファイルからコマンドを読むメインプログラムからなる
+      シンプルなプログラムである.
+    </span>
+    <span class="en">
+      It creates a main window and then processes Tcl commands.
+    </span>
+    <span class="ja">
+      <code>wish</code> はメインウインドウを生成し Tcl コマンドを処理する.
+    </span>
+    <span class="en">
+      If <code>wish</code> is invoked with arguments,
+      then the first few arguments, <code>?-encoding name?</code>
+      <code>?fileName?</code>, specify the name of a script file,
+      and, optionally, the encoding of the text data stored
+      in that script file.
+    </span>
+    <span class="ja">
+      <code>wish</code> が引数ありで起動されたとき、最初の数個の引数
+      <code>?-encoding name?</code> <code>?filename?</code> は
+      スクリプトファイルの名前と、オプションでスクリプトファイルに
+      格納されたテキストデータのエンコーディングを指定している.
+    </span>
+    <span class="en">
+      A value for fileName is recognized if the appropriate argument
+      does not start with "-".
+    </span>
+    <span class="ja">
+      妥当な引数が "-" で始まらないなら、ファイル名の値と見なされる.
+    </span>
+    <br><br>
+    <span class="en">
+      If there are no arguments, or the arguments do not specify a fileName,
+      then <code>wish</code> reads Tcl commands interactively
+      from standard input.
+    </span>
+    <span class="ja">
+      引数がない場合、または引数がファイル名を指定していない場合、
+      <code>wish</code> は標準入力から対話的に Tcl コマンドを読み取る。
+    </span>
+    <span class="en">
+      It will continue processing commands until all windows have been
+      deleted or until end-of-file is reached on standard input.
+    </span>
+    <span class="ja">
+      すべてのウィンドウが削除されるか、標準入力で EOF（ファイルの終わり）に
+      達するまでコマンドの処理を続ける。
+    </span>
+    <span class="en">
+      If there exists a file <code>.wishrc</code> in the home directory
+      of the user, wish evaluates the file as a Tcl script just before
+      reading the first command from standard input.
+    </span>
+    <span class="ja">
+      ユーザーのホームディレクトリに <code>.wishrc</code> というファイルが
+      存在する場合、wish は標準入力から最初のコマンドを読み取る前に
+      そのファイルを Tcl スクリプトとして評価する。
+    </span>
+    <br><br>
+    <span class="en">
+      If arguments to wish do specify a fileName,
+      then fileName is treated as the name of a script file.
+    </span>
+    <span class="ja">
+      wish の引数がファイル名を指定している場合、
+      そのファイル名はスクリプトファイルの名前として扱われる。
+    </span>
+    <span class="en">
+      Wish will evaluate the script in fileName
+      (which presumably creates a user interface),
+      then it will respond to events until all windows have been deleted.
+    </span>
+    <span class="ja">
+      Wish はファイル名のスクリプトを評価し（おそらくこれにより
+      ユーザーインターフェイスが作成される）、その後すべてのウィンドウが
+      削除されるまでイベントに応答する。
+    </span>
+    <span class="en">
+      Commands will not be read from standard input.
+    </span>
+    <span class="ja">
+      コマンドは標準入力からは読み取られない。
+    </span>
+    <span class="en">
+      There is no automatic evaluation of <code>.wishrc</code>
+      when the name of a script file is presented on the wish command line,
+      but the script file can always
+      <a href="../TclCmd/source.htm">source</a> it if desired.
+    </span>
+    <span class="ja">
+      スクリプトファイルの名前が wish コマンドラインに提示された場合、
+      <code>.wishrc</code> の自動評価は行われないが、
+      必要に応じてスクリプトファイルからそれを
+      <a href="../TclCmd/source.htm">source</a> することはできる。
+    </span>
+    <br><br>
+    <span class="en">
+      Note that on Windows, the <code>wish</code>version.exe program
+      varies from the <code>tclsh</code>version.exe program
+      in an additional important way:
+      it does not connect to a standard Windows console
+      and is instead a windowed program.
+    </span>
+    <span class="ja">
+      Windows では、<code>wish</code>version.exe プログラムが
+      <code>tclsh</code>version.exe プログラムと
+      異なる追加の重要な点があることに注意：
+      それは標準の Windows コンソールに接続せず、
+      代わりにウィンドウ化されたプログラムであるという点である。
+    </span>
+    <span class="en">
+      Because of this, it additionally provides access to its own
+      <a href="../TkCmd/console.htm">console</a> command.
+    </span>
+    <span class="ja">
+      このため、独自の <a href="../TkCmd/console.htm">console</a>
+      コマンドへのアクセスも提供する。
+    </span>
+
+    <h2><a name="OPTION PROCESSING">OPTION PROCESSING</a></h2>
+
+    <span class="en">
+      <code>Wish</code> automatically processes all of the command-line
+      options described in the <a href="#OPTIONS">OPTIONS</a> summary above.
+    </span>
+    <span class="ja">
+      <code>Wish</code>は、上記の<a href="#OPTIONS">OPTIONS</a>
+      概要に記載されているすべてのコマンドラインオプションを
+      自動的に処理します。
+    </span>
+    <span class="en">
+      Any other command-line arguments besides these are
+      passed through to the application using the
+      <a href="../TclCmd/tclvars.htm">argc</a> and
+      <a href="../TclCmd/tclvars.htm">argv</a>
+      variables described later.
+    </span>
+    <span class="ja">
+      これら以外のコマンドライン引数は、後で説明する
+      <a href="../TclCmd/tclvars.htm">argc</a> および
+      <a href="../TclCmd/tclvars.htm">argv</a> 変数を使用して
+      アプリケーションに渡されます。
+    </span>
+
+    <h2><a name="APPLICATION NAME AND CLASS">
+        APPLICATION NAME AND CLASS</a></h2>
+
+    <span class="en">
+      The name of the application, which is used for purposes
+      such as <a href="../TkCmd/sdnd.html">send</a> commands,
+      is taken from the <code>-name</code> option, if it is specified;
+      otherwise it is taken from fileName, if it is specified,
+      or from the command name by which <code>wish</code> was invoked.
+    </span>
+    <span class="ja">
+      アプリケーションの名前は、
+      <a href="../TkCmd/sdnd.html">send</a> コマンドなどの目的に使用され、
+      指定されていれば <code>-name</code> オプションから取得されます。
+      それ以外の場合は、指定されていれば fileName から、または
+      <code>wish</code> が呼び出されたコマンド名から取得されます。
+    </span>
+    <span class="en">
+      In the last two cases, if the name contains a "/" character,
+      then only the characters after the last slash are
+      used as the application name.
+    </span>
+    <span class="ja">
+      最後の二つの場合、名前に「/」文字が含まれていると、
+      最後のスラッシュ以降の文字だけがアプリケーション名として使用されます。
+    </span>
+    <br><br>
+    <span class="en">
+      The class of the application, which is used for purposes such as
+      specifying options with a <code>RESOURCE_MANAGER</code> property
+      or <code>.Xdefaults</code> file, is the same as its name except that
+      the first letter is capitalized.
+    </span>
+    <span class="ja">
+      アプリケーションのクラスは、<code>RESOURCE_MANAGER</code> プロパティや
+      <code>.Xdefaults</code> ファイルでオプションを指定するなどの目的に
+      使用され、最初の文字が大文字になることを除いて、その名前と同じです。
+    </span>
+
+    <h2><a name="VARIABLES">VARIABLES</a></h2>
+
+    <span class="en">
+      <code>Wish</code> sets the following <code>Tcl</code> variables:
+    </span>
+    <span class="ja">
+      <code>Wish</code> は以下の <code>Tcl</code> 変数を設定します:
+    </span>
+    <dl>
+      <dt>argc</dt>
+      <dd>
+        <span class="en">
+          Contains a count of the number of arg arguments (0 if none),
+          not including the options described above.
+        </span>
+        <span class="ja">
+          arg 引数の数をカウントした値を含みます (引数がない場合は 0)。
+          上記で説明したオプションは含みません。
+        </span>
+      </dd>
+      <dt>argv</dt>
+      <dd>
+        <span class="en">
+          Contains a Tcl list whose elements are the arg arguments that
+          follow a -- option or do not match any of the options described
+          in <a href="#OPTIONS">OPTIONS</a> above, in order,
+          or an empty string if there are no such arguments.
+        </span>
+        <span class="ja">
+          -- オプションの後に続く arg 引数、または上記の
+          <a href="#OPTIONS">OPTIONS</a> で
+          説明されたオプションに一致しない引数を順番に含む Tcl リスト、
+          またはそのような引数がない場合は空の文字列を含みます。
+        </span>
+      </dd>
+      <dt>argv0</dt>
+      <dd>
+        <span class="en">
+          Contains fileName if it was specified. Otherwise,
+          contains the name by which wish was invoked.
+        </span>
+        <span class="ja">
+          fileName が指定されていればその値を含みます。
+          それ以外の場合は、wish が呼び出された名前を含みます。
+        </span>
+      </dd>
+      <dt>geometry</dt>
+      <dd>
+        <span class="en">
+          If the -geometry option is specified, wish copies its value
+          into this variable.
+        </span>
+        <span class="ja">
+          -geometry オプションが指定されている場合、wish はその値を
+          この変数にコピーします。
+        </span>
+        <span class="en">
+          If the variable still exists after fileName has been evaluated,
+          wish uses the value of the variable in a wm geometry command
+          to set the main window's geometry.
+        </span>
+        <span class="ja">
+          fileName が評価された後もこの変数が存在する場合、
+          wish は wm geometry コマンドでメインウィンドウのジオメトリを
+          設定するためにこの変数の値を使用します。
+        </span>
+      </dd>
+      <dt>tcl_interactive</dt>
+      <dd>
+        <span class="en">
+          Contains 1 if wish is reading commands interactively
+          (fileName was not specified and standard input
+          is a terminal-like device), 0 otherwise.
+        </span>
+        <span class="ja">
+          wish が対話的にコマンドを読み込んでいる場合
+          (fileName が指定されておらず、標準入力が端末のような
+          デバイスである場合) は 1 を、そうでない場合は 0 を含みます。
+        </span>
+      </dd>
+    </dl>
+
+    <h2><a name="SCRIPT FILES">SCRIPT FILES</a></h2>
+
+    <span class="en">
+      If you create a Tcl script in a file whose first line is
+    </span>
+    <span class="ja">
+      ファイルの最初の行に次の行があるファイルに Tcl スクリプトを
+      作成する場合
+    </span>
+    <pre><code>
+#!/usr/local/bin/wish
+    </code></pre>
+    <span class="en">
+      then you can invoke the script file directly from your shell
+      if you mark it as executable.
+    </span>
+    <span class="ja">
+      ファイルを実行可能としてマークすると、
+      シェルからスクリプトファイルを直接呼び出すことができます。
+    </span>
+    <span class="en">
+      This assumes that <code>wish</code> has been installed
+      in the default location in /usr/local/bin;
+      if it is installed somewhere else then you will have to
+      modify the above line to match.
+    </span>
+    <span class="ja">
+      これは、<code>wish</code> が /usr/local/bin にデフォルトで
+      インストールされていることを前提としています。
+      別の場所にインストールされている場合は、上記の行を修正する必要が
+      あります。
+    </span>
+    <span class="en">
+      Many UNIX systems do not allow the <code>#!</code> line
+      to exceed about 30 characters in length,
+      so be sure that the <code>wish</code> executable can be accessed
+      with a short file name.
+    </span>
+    <span class="ja">
+      多くの UNIX システムでは、<code>#!</code> 行が約30文字を
+      超えることを許可していないため、<code>wish</code> 実行ファイルに
+      短いファイル名でアクセスできることを確認してください。
+    </span>
+    <br><br>
+    <span class="en">
+      An even better approach is to start your script files
+      with the following three lines:
+    </span>
+    <span class="ja">
+      さらに良い方法は、スクリプトファイルを次の3行で始めることです:
+    </span>
+    <pre><code>
+#!/bin/sh
+# the next line restarts using wish \
+exec wish "$0" ${1+"$@"}
+    </code></pre>
+    <span class="en">
+      This approach has three advantages over the approach
+      in the previous paragraph.
+    </span>
+    <span class="ja">
+      この方法には、前の段落の方法に比べて3つの利点があります。
+    </span>
+    <span class="en">
+      First, the location of the <code>wish</code> binary does not
+      have to be hard-wired into the script:
+      it can be anywhere in your shell search path.
+    </span>
+    <span class="ja">
+      第一に、<code>wish</code> バイナリの場所をスクリプトに固定する
+      必要がありません。シェル検索パスのどこにでも配置できます。
+    </span>
+    <span class="en">
+      Second, it gets around the 30-character file name limit
+      in the previous approach.
+    </span>
+    <span class="ja">
+      第二に、前の方法の30文字のファイル名制限を回避します。
+    </span>
+    <span class="en">
+      Third, this approach will work even if <code>wish</code> is itself
+      a shell script (this is done on some systems in order to
+      handle multiple architectures or operating systems:
+      the <code>wish</code> script selects one of several binaries to run).
+    </span>
+    <span class="ja">
+      第三に、この方法は、<code>wish</code> 自体がシェルスクリプトで
+      あっても機能します (これは、複数のアーキテクチャや OS を
+      処理するためにいくつかのシステムで行われます:
+      <code>wish</code> スクリプトはいくつかのバイナリの1つを
+      選択して実行します)。
+    </span>
+    <span class="en">
+      The three lines cause both <code>sh</code> and <code>wish</code>
+      to process the script, but the <a href="../TclCmd/exec.htm">exec</a>
+      is only executed by <code>sh</code>.
+    </span>
+    <span class="ja">
+      この3行により、<code>sh</code> と <code>wish</code> の両方が
+      スクリプトを処理しますが、<a href="../TclCmd/exec.htm">exec</a> は
+      <code>sh</code> のみが実行します。
+    </span>
+    <span class="en">
+      <code>sh</code> processes the script first; it treats the second line
+      as a comment and executes the third line.
+    </span>
+    <span class="ja">
+      <code>sh</code> は最初にスクリプトを処理します。
+      二行目をコメントとして扱い、三行目を実行します。
+    </span>
+    <span class="en">
+      The <a href="../TclCmd/exec.htm">exec</a> statement cause the shell
+      to stop processing and instead to start up <code>wish</code>
+      to reprocess the entire script.
+    </span>
+    <span class="ja">
+      <a href="../TclCmd/exec.htm">exec</a> 文はシェルの処理を停止させ、
+      代わりに <code>wish</code> を起動してスクリプト全体を再処理させます。
+    </span>
+    <span class="en">
+      When <code>wish</code> starts up, it treats all three lines
+      as comments, since the backslash at the end of the second line
+      causes the third line to be treated as part of the comment
+      on the second line.
+    </span>
+    <span class="ja">
+      <code>wish</code> が起動すると、二行目の末尾のバックスラッシュにより
+      三行目が二行目のコメントの一部として扱われるため、これらの三行は
+      すべてコメントとして扱われます。
+    </span>
+    <br><br>
+    <span class="en">
+      The end of a script file may be marked either by the physical end
+      of the medium, or by the character, "\032" ("\u001a", control-Z).
+    </span>
+    <span class="ja">
+      スクリプトファイルの終わりは、メディアの物理的な終わり、
+      または "\032" ("\u001a", control-Z) という文字でマークされることが
+      あります。
+    </span>
+    <span class="en">
+      If this character is present in the file,
+      the <code>wish</code> application will read text up to
+      but not including the character.
+    </span>
+    <span class="ja">
+      この文字がファイルに含まれている場合、
+      <code>wish</code> アプリケーションはこの文字までのテキストを
+      読み込みますが、この文字自体は含まれません。
+    </span>
+    <span class="en">
+      An application that requires this character in the file
+      may encode it as "\032", "\x1a", or "\u001a";
+      or may generate it by use of commands such as
+      <a href="../TclCmd/format.htm">format</a> or
+      <a href="../TclCmd/binary.htm">binary</a>.
+    </span>
+    <span class="ja">
+      ファイルにこの文字を必要とするアプリケーションは
+      "\032"、"\x1a"、または "\u001a" としてエンコードするか、
+      <a href="../TclCmd/format.htm">format</a> や
+      <a href="../TclCmd/binary.htm">binary</a> などのコマンドを
+      使用して生成することができます。
+    </span>
+
+    <h2><a name="PROMPTS">PROMPTS</a></h2>
+
+    <span class="en">
+      When wish is invoked interactively it normally prompts
+      for each command with "%".
+    </span>
+    <span class="ja">
+      wish が対話的に呼び出された場合、
+      通常は各コマンドのプロンプトとして "%" を表示します。
+    </span>
+    <span class="en">
+      You can change the prompt by setting the variables
+      <var>tcl_prompt1</var> and <var>tcl_prompt2</var>.
+    </span>
+    <span class="ja">
+      プロンプトを変更するには、
+      変数 <var>tcl_prompt1</var> と <var>tcl_prompt2</var> を設定します。
+    </span>
+    <span class="en">
+      If variable <var>tcl_prompt1</var> exists then it must consist of
+      a Tcl script to output a prompt; instead of outputting a prompt
+      wish will evaluate the script in <var>tcl_prompt1</var>.
+    </span>
+    <span class="ja">
+      変数 <var>tcl_prompt1</var> が存在する場合、プロンプトを出力する
+      ための Tcl スクリプトでなければなりません。wish はプロンプトを
+      出力する代わりに <var>tcl_prompt1</var> のスクリプトを評価します。
+    </span>
+    <span class="en">
+      The variable <var>tcl_prompt2</var> is used in a similar way
+      when a newline is typed but the current command is not yet complete;
+      if <var>tcl_prompt2</var> is not set then no prompt is output
+      for incomplete commands.
+    </span>
+    <span class="ja">
+      変数 <var>tcl_prompt2</var> は、
+      改行が入力されたが現在のコマンドがまだ完了していない場合に
+      同様に使用されます。<var>tcl_prompt2</var> が設定されていない場合、
+      不完全なコマンドに対してプロンプトは出力されません。
+    </span>
+
+    <h2><a name="SEE ALSO">SEE ALSO</a></h2>
+    <a href="../UserCmd/tclsh.htm">tclsh</a>
+    <a href="../TkCmd/toplevel.htm">toplevel</a>
+    <a href="../TkLib/Tk_Main.htm">Tk_Main</a>
+    <a href="../TkLib/MainLoop.htm">Tk_MainLoop</a>
+    <a href="../TkLib/MainWin.htm">Tk_MainWindow</a>
+
+  </body>
+</html>

@@ -1,0 +1,17 @@
+body {
+    background-image: url('with-pc.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    /*  dark:
+            normal, multiply, screen, overlay, lighten,
+            color-dodge, hard-light, soft-light,
+            difference, exclusion, color, luminosity
+        pink:
+            normal, multiply, darken, color-burn,
+            hard-light, difference, exclusion, luminosity */
+    background-blend-mode: normal;
+}
+
+body { color: rgb(255 255 255); }

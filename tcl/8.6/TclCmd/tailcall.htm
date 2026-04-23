@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>tailcall</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="basecss"  rel="stylesheet" href="/css/base.css">
+    <link id="themecss" rel="stylesheet" href="/css/dark.css">
+    <script src="/js/gebi.js"></script>
+    <script src="/js/cookie.js"></script>
+    <script src="/js/css.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/bgimg.js"></script>
+    <script src="/js/face_onload.js"></script>
+    <script src="/js/trim_code.js"></script>
+    <script src="/js/turn.js"></script>
+  </head>
+  <body onload="face_onload(); trim_code();">
+    <div class="top-right-menu">
+      <button onclick="location.href='/face/face.html'">face</button>
+      <button onclick="turn(this, '.en', turn_inline)" >英文</button>
+      <button onclick="turn(this, '.ja', turn_inline)" >訳文</button>
+    </div>
+
+    <h2><a name="NAME">NAME</a></h2>
+    <code>tailcall</code> ---
+    <span class="en">Replace the current procedure with another command</span>
+    <span class="ja">現在のプロシージャを別のコマンドに置き換える</span>
+
+    <h2><a name="SYNOPSIS">SYNOPSIS</a></h2>
+    <code>tailcall</code> command ?arg ...?
+
+    <h2><a name="DESCRIPTION">DESCRIPTION</a></h2>
+
+    <span class="en">
+      The <code>tailcall</code> command replaces the currently executing
+      procedure, lambda application, or method with another command.
+    </span>
+    <span class="ja">
+      <code>tailcall</code> コマンドは、現在実行中のプロシージャ、
+      ラムダ適用、またはメソッドを別のコマンドに置き換えます。
+    </span>
+    <span class="en">
+      The command, which will have <code>arg ...</code> passed as arguments
+      if they are supplied, will be
+      looked up in the current namespace context, not in the caller's.
+    </span>
+    <span class="ja">
+      コマンドは、引数として <code>arg ...</code> が指定されている場合、
+      それらを引数として渡されますが、呼び出し元ではなく現在の名前空間
+      コンテキストで検索されます。
+    </span>
+    <span class="en">
+      Apart from that difference in resolution, it is equivalent to:
+    </span>
+    <span class="ja">
+      解決方法の違いを除けば、それは次のものと同等です:
+    </span>
+    <pre><code>
+        return [uplevel 1 [list command ?arg ...?]]
+    </code></pre>
+    <span class="en">
+      This command may not be invoked from within an <code>uplevel</code>
+      into a procedure or inside a <code>catch</code> inside a procedure
+      or lambda.
+    </span>
+    <span class="ja">
+      このコマンドは、プロシージャ内の <code>uplevel</code> から、
+      またはプロシージャやラムダ内の <code>catch</code> 内から
+      呼び出すことはできません。
+    </span>
+
+    <h2><a name="EXAMPLES">EXAMPLES</a></h2>
+
+    <span class="en">Compute the factorial of a number.</span>
+    <span class="ja">数値の階乗を計算します。</span>
+    <pre><code>
+proc factorial {n {accum 1}} {
+    if {$n < 2} {
+        return $accum
+    }
+    tailcall factorial [expr {$n - 1}] [expr {$accum * $n}]
+}
+             </code></pre>
+    <span class="en">
+      Print the elements of a list with alternating lines having
+      different indentations.
+    </span>
+    <span class="ja">
+      リストの要素を交互に異なるインデントで印刷します。
+    </span>
+    <pre><code>
+proc printList {theList} {
+    if {[llength $theList]} {
+        puts "> [lindex $theList 0]"
+        tailcall printList2 [lrange $theList 1 end]
+    }
+}
+proc printList2 {theList} {
+    if {[llength $theList]} {
+        puts "< [lindex $theList 0]"
+        tailcall printList [lrange $theList 1 end]
+    }
+}
+    </code></pre>
+
+    <h2><a name="SEE ALSO">SEE ALSO</a></h2>
+    <a href="../TclCmd/apply.htm">apply</a>
+    <a href="../TclCmd/proc.htm">proc</a>
+    <a href="../TclCmd/uplevel.htm">upleval</a>
+    <a href=""></a>
+    <a href=""></a>
+
+  </body>
+</html>

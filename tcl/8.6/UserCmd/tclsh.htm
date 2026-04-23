@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>tclsh</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="basecss"  rel="stylesheet" href="/css/base.css">
+    <link id="themecss" rel="stylesheet" href="/css/dark.css">
+    <script src="/js/gebi.js"></script>
+    <script src="/js/cookie.js"></script>
+    <script src="/js/css.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/bgimg.js"></script>
+    <script src="/js/face_onload.js"></script>
+    <script src="/js/trim_code.js"></script>
+    <script src="/js/turn.js"></script>
+  </head>
+  <body onload="face_onload(); trim_code();">
+    <div class="top-right-menu">
+      <button onclick="location.href='/face/face.html'">face</button>
+      <button onclick="turn(this, '.en', turn_by_tag)" >英文</button>
+      <button onclick="turn(this, '.ja', turn_by_tag)" >訳文</button>
+    </div>
+
+    <h2><a name="NAME">NAME</a></h2>
+    <code>tclsh</code> --- Simple shell containing Tcl interpreter
+
+    <h2><a name="SYNOPSIS">SYNOPSIS</a></h2>
+    <code>tclsh</code> ?-encoding name? ?fileName arg ...?
+
+    <h2><a name="DESCRIPTION">DESCRIPTION</a></h2>
+    <span class="en">
+      Tclsh is a shell-like application that reads Tcl commands
+      from its standard input or from a file and evaluates them.
+    </span>
+    <span class="ja">
+      Tclsh は、標準入力またはファイルから Tcl コマンドを読み取り、
+      それを評価するシェルのようなアプリケーションです。
+    </span>
+    <span class="en">
+      If invoked with no arguments then it runs interactively,
+      reading Tcl commands from standard input and
+      printing command results and error messages to standard output.
+    </span>
+    <span class="ja">
+      引数なしで起動されると、対話的に実行され、標準入力から
+      Tcl コマンドを読み取り、コマンドの結果やエラーメッセージを
+      標準出力に表示します。
+    </span>
+    <span class="en">
+      It runs until the <a href="../TclCmd/exit.htm">exit</a> command
+      is invoked or until it reaches end-of-file on its standard input.
+    </span>
+    <span class="ja">
+      <a href="../TclCmd/exit.htm">exit</a> コマンドが呼び出されるか、
+      標準入力で EOF（ファイルの終わり）に達するまで実行されます。
+    </span>
+    <span class="en">
+      If there exists a file .tclshrc
+      (or tclshrc.tcl on the Windows platforms)
+      in the home directory of the user, interactive tclsh evaluates
+      the file as a Tcl script just before reading the first command
+      from standard input.
+    </span>
+    <span class="ja">
+      ユーザーのホームディレクトリに .tclshrc
+      (または Windows プラットフォームでは tclshrc.tcl) というファイルが
+      存在する場合、対話的な tclsh は標準入力から最初のコマンドを
+      読み取る直前にそのファイルを Tcl スクリプトとして評価します。
+    </span>
+
+    <h2><a name="SCRIPT FILES">SCRIPT FILES</a></h2>
+    <span class="en">
+      If tclsh is invoked with arguments then the first few arguments
+      specify the name of a script file, and, optionally,
+      the encoding of the text data stored in that script file.
+    </span>
+    <span class="ja">
+      tclsh が引数付きで起動された場合、最初の数個の引数は
+      スクリプトファイルの名前と、オプションでそのスクリプトファイルに
+      格納されたテキストデータのエンコーディングを指定します。
+    </span>
+    <span class="en">
+      Any additional arguments are made available to the script
+      as variables (see below).
+    </span>
+    <span class="ja">
+      追加の引数は変数としてスクリプトで利用可能です（下記参照）。
+    </span>
+    <span class="en">
+      Instead of reading commands from standard input tclsh will read
+      Tcl commands from the named file; tclsh will exit when it reaches
+      the end of the file.
+    </span>
+    <span class="ja">
+      標準入力からコマンドを読み取る代わりに、tclsh は指定された
+      ファイルから Tcl コマンドを読み取ります。tclsh はファイルの
+      終わりに達すると終了します。
+    </span>
+    <span class="en">
+      The end of the file may be marked either by the physical end of the
+      medium, or by the character, “\032” (“\u001a”, control-Z).</span>
+    <span class="ja">
+      ファイルの終わりは、メディアの物理的な終わり、または文字
+      “\032” (“\u001a”、control-Z) でマークされることがあります。</span>
+    <span class="en">
+      If this character is present in the file, the tclsh application
+      will read text up to but not including the character.
+    </span>
+    <span class="ja">
+      この文字がファイルに存在する場合、tclsh アプリケーションは
+      その文字までのテキストを読み取り、その文字自体は含みません。
+    </span>
+    <span class="en">
+      An application that requires this character in the file may safely
+      encode it as "\032", "\x1A", or "\u001a"; or may generate it
+      by use of commands such as
+      <a href="../TclCmd/format.htm">format</a> or
+      <a href="../TclCmd/binary.htm">binary</a>.
+    </span>
+    <span class="ja">
+      ファイル内にこの文字が必要なアプリケーションは、
+      それを "\032"、"\x1A"、または "\u001a" として安全にエンコードするか、
+      <a href="../TclCmd/format.htm">format</a> や
+      <a href="../TclCmd/binary.htm">binary</a>
+      などのコマンドを使用して生成することができます。
+    </span>
+    <span class="en">
+      There is no automatic evaluation of .tclshrc
+      when the name of a script file is presented on the tclsh command line,
+      but the script file can always
+      <a href="../TclCmd/source.htm">source</a> it if desired.
+    </span>
+    <span class="ja">
+      スクリプトファイルの名前が tclsh コマンドラインに提示された場合、
+      .tclshrc の自動評価は行われませんが、必要に応じて
+      スクリプトファイルからそれを
+      <a href="../TclCmd/source.htm">source</a> することができます。
+    </span>
+    <span class="en">
+      If you create a <code>Tcl</code> script in a file whose first line is
+    </span>
+    <span class="ja">
+      ファイルの最初の行が次のようになっている <code>Tcl</code> スクリプトを
+      作成した場合
+    </span>
+    <pre><code>
+#!/usr/local/bin/tclsh
+    </code></pre>
+    <span class="en">
+      then you can invoke the script file directly from your shell
+      if you mark the file as executable.
+    </span>
+    <span class="ja">
+      そのファイルに実行権限を与えれば、シェルから直接スクリプトファイルを
+      実行できます。
+    </span>
+    <span class="en">
+      This assumes that <code>tclsh</code> has been installed
+      in the default location in /usr/local/bin; if it is installed
+      somewhere else then you will have to modify the above line
+      to match.
+    </span>
+    <span class="ja">
+      これは、<code>tclsh</code> がデフォルトの場所
+      /usr/local/bin にインストールされていることを前提としています。
+      別の場所にインストールされている場合は、上記の行を修正する必要が
+      あります。
+    </span>
+    <span class="en">
+      Many UNIX systems do not allow the #! line to exceed about 30 characters
+      in length, so be sure that the <code>tclsh</code> executable
+      can be accessed with a short file name.
+    </span>
+    <span class="ja">
+      多くの UNIX システムでは #! 行が約 30 文字を超えることが
+      許されていないため、<code>tclsh</code> 実行ファイルに
+      短いファイル名でアクセスできるようにしてください。
+    </span>
+    <br><br>
+    <span class="en">
+      An even better approach is to start your script files with
+      the following three lines:
+    </span>
+    <span class="ja">
+      さらに良い方法として、スクリプトファイルの冒頭を次の3行で
+      始めることがあります：
+    </span>
+    <pre><code>
+#!/bin/sh
+# the next line restarts using tclsh \
+exec tclsh "$0" ${1+"$@"}
+    </code></pre>
+    <span class="en">
+      This approach has three advantages over the approach
+      in the previous paragraph.
+    </span>
+    <span class="ja">
+      この方法には、前の段落の方法に比べて3つの利点があります。
+    </span>
+    <span class="en">
+      First, the location of the <code>tclsh</code> binary does not
+      have to be hard-wired into the script: it can be anywhere
+      in your shell search path.
+    </span>
+    <span class="ja">
+      第一に、<code>tclsh</code> バイナリの場所をスクリプトに
+      ハードコーディングする必要がなく、シェルの検索パス内の
+      どこにでも置くことができます。
+    </span>
+    <span class="en">
+      Second, it gets around the 30-character file name limit
+      in the previous approach.
+    </span>
+    <span class="ja">
+      第二に、前の方法の30文字のファイル名制限を回避できます。
+    </span>
+    <span class="en">
+      Third, this approach will work even if <code>tclsh</code> is itself
+      a shell script (this is done on some systems in order to handle
+      multiple architectures or operating systems:
+      the <code>tclsh</code> script selects one of several binaries
+      to run).
+    </span>
+    <span class="ja">
+      第三に、この方法は <code>tclsh</code> 自体がシェルスクリプトである
+      場合にも機能します（これは複数のアーキテクチャやオペレーティング
+      システムを扱うために一部のシステムで行われます：
+      <code>tclsh</code> スクリプトは複数のバイナリの中から1つを選んで
+      実行します）。
+    </span>
+    <span class="en">
+      The three lines cause both <code>sh</code> and <code>tclsh</code>
+      to process the script, but the <a href="../TclCmd/exec.htm">exec</a>
+      is only executed by <code>sh</code>.
+    </span>
+    <span class="ja">
+      これらの3行により、<code>sh</code> と <code>tclsh</code> の両方が
+      スクリプトを処理しますが、<a href="../TclCmd/exec.htm">exec</a> は
+      <code>sh</code> のみが実行します。
+    </span>
+    <span class="en">
+      <code>sh</code> processes the script first;
+      it treats the second line as a comment and executes the third line.
+    </span>
+    <span class="ja">
+      <code>sh</code> はまずスクリプトを処理し、2行目をコメントとして扱い、
+      3行目を実行します。
+    </span>
+    <span class="en">
+      The <a href="../TclCmd/exec.htm">exec</a> statement cause
+      the shell to stop processing and instead to start up
+      <code>tclsh</code> to reprocess the entire script.
+    </span>
+    <span class="ja">
+      <a href="../TclCmd/exec.htm">exec</a> ステートメントは
+      シェルの処理を停止させ、代わりに <code>tclsh</code> を起動して
+      スクリプト全体を再処理させます。
+    </span>
+    <span class="en">
+      When <code>tclsh</code> starts up, it treats all three lines
+      as comments, since the backslash at the end of the second line
+      causes the third line to be treated as part of the comment
+      on the second line.
+    </span>
+    <span class="ja">
+      <code>tclsh</code> が起動すると、2行目の末尾のバックスラッシュにより、
+      3行目が2行目のコメントの一部として扱われるため、3行すべてが
+      コメントとして扱われます。
+    </span>
+    <br><br>
+    <span class="en">
+      You should note that it is also common practice to install
+      <code>tclsh</code> with its version number as part of the name.
+    </span>
+    <span class="ja">
+      <code>tclsh</code> をバージョン番号を含む名前でインストールするのが
+      一般的であることにも注意する必要があります。
+    </span>
+    <span class="en">
+      This has the advantage of allowing multiple versions of
+      <code>Tcl</code> to exist on the same system at once,
+      but also the disadvantage of making it harder to write scripts
+      that start up uniformly across different versions of
+      <code>Tcl</code>.
+    </span>
+    <span class="ja">
+      これには、同じシステムに複数のバージョンの <code>Tcl</code> を
+      同時に存在させることができるという利点がありますが、
+      異なるバージョンの <code>Tcl</code> で一貫して起動するスクリプトを
+      書くのが難しくなるという欠点もあります。
+    </span>
+
+    <h2><a name="VARIABLES">VARIABLES</a></h2>
+    <span class="en">
+      Tclsh sets the following global Tcl variables in addition to
+      those created by the Tcl library itself
+      (such as env, which maps environment variables
+      such as PATH into Tcl):
+    </span>
+    <span class="ja">
+      Tclsh は、Tcl ライブラリ自体によって作成される変数
+      (例えば、環境変数 PATH を Tcl にマッピングする env など) に加えて、
+      以下のグローバル Tcl 変数を設定します：
+    </span>
+    <dl>
+      <dt>argc</dt>
+      <dd>
+        <span class="en">
+          Contains a count of the number of arg arguments (0 if none),
+          not including the name of the script file.
+        </span>
+        <span class="ja">
+          arg 引数の数をカウントします（0 はなし）、
+          スクリプトファイルの名前は含みません。
+        </span>
+      </dd>
+      <dt>argv</dt>
+      <dd>
+        <span class="en">
+          Contains a Tcl list whose elements are the arg arguments,
+          in order, or an empty string if there are no arg arguments.
+        </span>
+        <span class="ja">
+          arg 引数を順番に要素とする Tcl リストを含みます。
+          arg 引数がない場合は空の文字列です。
+        </span>
+      </dd>
+      <dt>argv0</dt>
+      <dd>
+        <span class="en">
+          Contains fileName if it was specified.
+        </span>
+        <span class="ja">
+          fileName が指定されていれば、それを含みます。
+        </span>
+        <span class="en">
+          Otherwise, contains the name by which tclsh was invoked.
+        </span>
+        <span class="ja">
+          そうでなければ、tclsh が起動された名前を含みます。
+        </span>
+      </dd>
+      <dt>tcl_interactive</dt>
+      <dd>
+        <span class="en">
+          Contains 1 if tclsh is running interactively
+          (no fileName was specified and standard input is
+          a terminal-like device), 0 otherwise.
+        </span>
+        <span class="ja">
+          tclsh が対話的に実行されている場合
+          (fileName が指定されておらず、標準入力がターミナルのようなデバイス
+          である場合）には 1 を含み、それ以外の場合は 0 を含みます。
+        </span>
+      </dd>
+    </dl>
+
+    <h2><a name="PROMPTS">PROMPTS</a></h2>
+    <span class="en">
+      When tclsh is invoked interactively it normally prompts
+      for each command with "%".
+    </span>
+    <span class="ja">
+      tclsh がインタラクティブに起動されると、通常は各コマンドに対して
+      「% 」のプロンプトを表示します。
+    </span>
+    <span class="en">
+      You can change the prompt by setting the global variables
+      tcl_prompt1 and tcl_prompt2. </span>
+    <span class="ja">
+      グローバル変数 tcl_prompt1 および tcl_prompt2 を設定することで、
+      プロンプトを変更できます。
+    </span>
+    <span class="en">
+      If variable tcl_prompt1 exists then it must consist of a Tcl script
+      to output a prompt; instead of outputting a prompt tclsh will
+      evaluate the script in tcl_prompt1.
+    </span>
+    <span class="ja">
+      変数 tcl_prompt1 が存在する場合、それはプロンプトを出力するための
+      Tcl スクリプトでなければなりません。
+      tclsh はプロンプトを出力する代わりに、
+      tcl_prompt1 内のスクリプトを評価します。
+    </span>
+    <span class="en">
+      The variable tcl_prompt2 is used in a similar way
+      when a newline is typed but the current command is not yet complete;
+      if tcl_prompt2 is not set then no prompt is output
+      for incomplete commands.
+    </span>
+    <span class="ja">
+      変数 tcl_prompt2 は、改行が入力されたが現在のコマンドが
+      まだ完了していない場合に同様に使用されます。
+      tcl_prompt2 が設定されていない場合、不完全なコマンドに対して
+      プロンプトは出力されません。
+    </span>
+
+    <h2><a name="STANDARD CHANNELS">STANDARD CHANNELS</a></h2>
+    <span class="en">
+      See <a href="../TclLib/StdChannels.htm">Tcl_StandardChannels</a>
+      for more explanations.
+    </span>
+    <span class="ja">
+      詳しくは、
+      <a href="../TclLib/StdChannels.htm">Tcl_StandardChannels</a> を
+      参照してください。
+    </span>
+
+    <h2><a name="SEE ALSO">SEE ALSO</a></h2>
+    <a href="../TclCmd/tclvars.htm">auto_path</a>
+    <a href="../TclCmd/encoding.htm">encoding</a>
+    <a href="../TclCmd/tclvars.htm">env</a>
+    <a href="../TclCmd/fconfigure.htm">fconfigure</a>
+
+  </body>
+</html>
